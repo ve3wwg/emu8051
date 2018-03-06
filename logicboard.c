@@ -35,7 +35,9 @@
 
 static int position;
 static int logicmode = 0;
+#if 0
 static int portmode = 0;
+#endif
 static int oldports[4];
 static unsigned char shiftregisters[4*4];
 static int audiotick = 0;
@@ -536,6 +538,7 @@ void wipe_logicboard_view()
 
 void build_logicboard_view(struct em8051 *aCPU)
 {
+    (void)aCPU;
     erase();
     logicboard_entermode();
 }
@@ -544,6 +547,8 @@ void build_logicboard_view(struct em8051 *aCPU)
 void logicboard_editor_keys(struct em8051 *aCPU, int ch)
 {
     int xorvalue = -1;
+
+    (void)aCPU;
     switch (ch)
     {
     case KEY_RIGHT:

@@ -240,6 +240,9 @@ void memeditor_editor_keys(struct em8051 *aCPU, int ch)
 void memeditor_update(struct em8051 *aCPU)
 {
     int i, j, bytevalue;
+
+    (void)aCPU;
+
     for (i = 0; i < 5; i++)
     {
         werase(eds[i].view);

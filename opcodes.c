@@ -136,7 +136,7 @@ static void sub_solve_flags(struct em8051 * aCPU, int value1, int value2)
 
 static int ajmp_offset(struct em8051 *aCPU)
 {
-    int address = (PC + 2) & 0xf800 |
+    int address = ((PC + 2) & 0xf800) |
                   OPERAND1 | 
                   ((OPCODE & 0xe0) << 3);
 
@@ -249,7 +249,7 @@ static int jbc_bitaddr_offset(struct em8051 *aCPU)
 
 static int acall_offset(struct em8051 *aCPU)
 {
-    int address = (PC + 2) & 0xf800 | OPERAND1 | ((OPCODE & 0xe0) << 3);
+    int address = ((PC + 2) & 0xf800) | OPERAND1 | ((OPCODE & 0xe0) << 3);
     push_to_stack(aCPU, (PC + 2) & 0xff);
     push_to_stack(aCPU, (PC + 2) >> 8);
     PC = address;
@@ -1062,7 +1062,7 @@ static int mov_bitaddr_c(struct em8051 *aCPU)
 
 static int movc_a_indir_a_dptr(struct em8051 *aCPU)
 {
-    int address = (aCPU->mSFR[REG_DPH] << 8) | (aCPU->mSFR[REG_DPL] << 0) + ACC;
+    int address = (aCPU->mSFR[REG_DPH] << 8) | ((aCPU->mSFR[REG_DPL] << 0) + ACC);
     ACC = aCPU->mCodeMem[address & (aCPU->mCodeMemSize - 1)];
     PC++;
     return 1;
@@ -1148,7 +1148,9 @@ static int orl_c_compl_bitaddr(struct em8051 *aCPU)
 static int mov_c_bitaddr(struct em8051 *aCPU) 
 {
     int address = OPERAND1;
+#if 0
     int carry = CARRY;
+#endif
     if (address > 0x7f)
     {
         int bit = address & 7;

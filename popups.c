@@ -171,7 +171,7 @@ void emu_load(struct em8051 *aCPU)
     while (ch != '\n')
     {
         ch = getch();
-        if (ch > 31 && ch < 127 || ch > 127 && ch < 255)
+        if ( (ch > 31 && ch < 127) || (ch > 127 && ch < 255) )
         {
             if (pos < 44)
             {
@@ -276,7 +276,7 @@ int emu_readvalue(struct em8051 *aCPU, const char *aPrompt, int aOldvalue, int a
         {
             int currvalue = strtol(temp, NULL, 16);
             char assembly[64];
-            decode(aCPU, currvalue, assembly);
+            decode(aCPU, currvalue, (unsigned char *)assembly);
             wmove(exc,2,5 + aValueSize);
             waddstr(exc, "                                        ");
             wmove(exc,2,5 + aValueSize);
@@ -285,7 +285,7 @@ int emu_readvalue(struct em8051 *aCPU, const char *aPrompt, int aOldvalue, int a
         wmove(exc,2,3 + pos);
         wrefresh(exc);
         ch = getch();
-        if (ch >= '0' && ch <= '9' || ch >= 'a' && ch <= 'f' || ch >= 'A' && ch <= 'F')
+        if ( (ch >= '0' && ch <= '9') || (ch >= 'a' && ch <= 'f') || (ch >= 'A' && ch <= 'F') )
         {
             if (pos < aValueSize)
             {
@@ -373,11 +373,15 @@ int emu_readhz(struct em8051 *aCPU, const char *aPrompt, int aOldvalue)
 int emu_reset(struct em8051 *aCPU)
 {
     WINDOW * exc;
+#if 0
     char temp[256];
     int pos = 0;
+#endif
     int ch = 0;
     int result;
+#if 0
     temp[0] = 0;
+#endif
 
     runmode = 0;
     setSpeed(speed, runmode);
@@ -425,10 +429,12 @@ int emu_reset(struct em8051 *aCPU)
 void emu_help(struct em8051 *aCPU)
 {
     WINDOW * exc;
+#if 0
     char temp[256];
     int pos = 0;
-    int ch = 0;
     temp[0] = 0;
+#endif
+    int ch = 0;
 
     runmode = 0;
     setSpeed(speed, runmode);
@@ -469,6 +475,7 @@ void emu_help(struct em8051 *aCPU)
     wrefresh(exc);
 
     ch = getch();
+    (void)ch;
 
     delwin(exc);
     refreshview(aCPU);

@@ -67,6 +67,7 @@ void wipe_options_view()
 
 void build_options_view(struct em8051 *aCPU)
 {
+    (void)aCPU;
     erase();
 }
 
@@ -177,6 +178,9 @@ void options_editor_keys(struct em8051 *aCPU, int ch)
 void options_update(struct em8051 *aCPU)
 {
     int i;
+
+    (void)aCPU;
+
     mvprintw(1, 1, "Options");
     for (i = 0; i < 10; i++)
         mvprintw(i * 2 + 3, 2, "  ");

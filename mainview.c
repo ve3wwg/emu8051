@@ -420,9 +420,9 @@ void mainview_editor_keys(struct em8051 *aCPU, int ch)
             else
             {
                 if (cursorpos & 1)
-                    setregoutput(aCPU, cursorpos / 2, getregoutput(aCPU, cursorpos / 2) & 0xf0 | insert_value);
+                    setregoutput(aCPU, cursorpos / 2, (getregoutput(aCPU, cursorpos / 2) & 0xf0) | insert_value);
                 else
-                    setregoutput(aCPU, cursorpos / 2, getregoutput(aCPU, cursorpos / 2) & 0x0f | (insert_value << 4));
+                    setregoutput(aCPU, cursorpos / 2, (getregoutput(aCPU, cursorpos / 2) & 0x0f) | (insert_value << 4));
             }
             cursorpos++;
             if (cursorpos > 23)
@@ -521,7 +521,7 @@ void mainview_update(struct em8051 *aCPU)
             hoffs = (hline * (128 + 64 + sizeof(int)));
 
             memcpy(&old_pc, history + hoffs + 128 + 64, sizeof(int));
-            opcode_bytes = decode(aCPU, old_pc, assembly);
+            opcode_bytes = decode(aCPU, old_pc, (unsigned char *)assembly);
             stringpos = 0;
             stringpos += sprintf(temp + stringpos,"\n%04X  ", old_pc & 0xffff);
             
